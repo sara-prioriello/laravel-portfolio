@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ProjectController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,8 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function () {
         Route::get('/index', [DashboardController::class, 'index'])->name('index');
+        
     });
-
+Route::resource('projects', ProjectController::class)
+        -> middleware('auth','verified');
 require __DIR__.'/auth.php';
