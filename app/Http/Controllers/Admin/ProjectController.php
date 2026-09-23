@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Category;
 
 class ProjectController extends Controller
 {
@@ -23,7 +24,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        //devo aggiungere la logica per passare le categorie alla vista
+        $categories = Category::all();
+        return view('projects.create', compact('categories'));
     }
 
     /**
@@ -39,6 +42,7 @@ class ProjectController extends Controller
 
         $newProject -> name = $data['name'];
         $newProject -> description = $data['description'];
+        $newProject -> category_id = $data['category_id'];  
         $newProject->customer = $data['customer'];
         $newProject->period = $data['period'];
 
@@ -53,7 +57,8 @@ return redirect()->route('projects.show', $newProject);
      */
     public function show(Project $project)
     {
-        return view('projects.show', compact('project'));
+        $categories = Category::all();
+        return view('projects.show', compact('project', 'categories'));
     }
 
     /**
@@ -61,7 +66,9 @@ return redirect()->route('projects.show', $newProject);
      */
     public function edit(Project $project)
     {
-       return view('projects.edit', compact('project'));
+        $categories = Category::all();  
+       
+       return view('projects.edit', compact('project', 'categories'));
     }
 
     /**
@@ -73,6 +80,7 @@ return redirect()->route('projects.show', $newProject);
       
         $project->name = $data['name'];
         $project->description = $data['description'];
+        $project->category_id = $data['category_id'];
         $project->customer = $data['customer'];
         $project->period = $data['period'];
 
@@ -84,8 +92,9 @@ return redirect()->route('projects.show', $newProject);
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Project $project)
     {
-        //
+        $project -> delete();
+        return redirect()->route('projects.index');
     }
 }

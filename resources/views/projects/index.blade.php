@@ -1,7 +1,7 @@
 @extends('layouts.projects')
 @section('title', 'Projects')
 @section('content')
-   //creiamo una tabella con tutti i progetti
+  
    <table class="table">
    <thead>
       @foreach ($projects as $project)

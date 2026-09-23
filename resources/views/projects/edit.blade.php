@@ -13,7 +13,15 @@
             <label for="customer" class="form-label">Cliente</label>
             <input type="text" class="form-control" id="customer" name="customer" required value="{{ $project->customer }}">
         </div>
-
+    <div class="mb-3">
+            <label for="category_id" class="form-label">Categoria</label>
+            <select class="form-select" id="category_id" name="category_id" required>
+                <option value="">Seleziona una categoria</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ $project->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="mb-3">
             <label for="period" class="form-label">Periodo</label>
             <input type="text" class="form-control" id="period" name="period" placeholder="es. Gennaio – Marzo 2025" required value="{{ $project->period }}">

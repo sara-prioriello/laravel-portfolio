@@ -20,6 +20,7 @@ class ProjectSeeder extends Seeder
             $newProject->description = fake()->paragraph(2);
             $newProject->customer = fake()->company();
             $newProject->period = fake()->date();
+            $newProject->category_id = rand(1, 5); // Assuming you have 5 categories seeded
             $newProject->save();
         }
     }
