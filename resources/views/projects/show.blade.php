@@ -36,6 +36,17 @@
   <p>{{ $project->category->name }}</p>
  
     <p>{{ $project->customer }}</p>
+
+    @if (count($project->technologies) > 0)
+    <small>
+        
+        @foreach ($project->technologies as $technology)
+            <span class="badge rounded-pill" style="background-color: {{ $technology->color }};">{{ $technology->name }}</span>
+        @endforeach
+    </small>
+    @endif
+
     <p>{{ $project->period }}</p>
+
     <p>{{ $project->description }}</p>
 @endsection

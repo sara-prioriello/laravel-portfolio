@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Category;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {
@@ -26,7 +27,8 @@ class ProjectController extends Controller
     {
         //devo aggiungere la logica per passare le categorie alla vista
         $categories = Category::all();
-        return view('projects.create', compact('categories'));
+        $technologies = Technology::all();
+        return view('projects.create', compact('categories', 'technologies'));
     }
 
     /**
@@ -48,8 +50,14 @@ class ProjectController extends Controller
 
            // dd($newProject);
             $newProject -> save();
+            //DOPO aver salvato il post 
+            //controllo se ricevo delle technologies dalla request
+            if ($request->has('technologies')) {
+        $newProject->technologies()->attach($data['technologies']);
+            }
+        return redirect()->route('projects.show', $newProject);
 
-return redirect()->route('projects.show', $newProject);
+        
             
             }
     /**
@@ -58,7 +66,8 @@ return redirect()->route('projects.show', $newProject);
     public function show(Project $project)
     {
         $categories = Category::all();
-        return view('projects.show', compact('project', 'categories'));
+        $technologies = Technology::all();
+        return view('projects.show', compact('project', 'categories', 'technologies'));
     }
 
     /**
@@ -67,8 +76,10 @@ return redirect()->route('projects.show', $newProject);
     public function edit(Project $project)
     {
         $categories = Category::all();  
+        $technologies = Technology::all();
+        
        
-       return view('projects.edit', compact('project', 'categories'));
+       return view('projects.edit', compact('project', 'categories', 'technologies'));
     }
 
     /**
@@ -84,7 +95,17 @@ return redirect()->route('projects.show', $newProject);
         $project->customer = $data['customer'];
         $project->period = $data['period'];
 
+        $data = request()->all();
+
         $project->update();
+
+        //dobbiamo controllare se la richiesta contiene le technologies
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($data['technologies']);
+
+        } else {
+            $project->technologies()->detach();
+        }
 
         return redirect()->route('projects.show', $project);
     }
