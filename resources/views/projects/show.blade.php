@@ -9,6 +9,8 @@
 <form action="{{ route('projects.destroy', $project) }}" method="POST">
     @csrf
     @method('DELETE')  
+
+    
     <input type="submit" value="Cancella project">
    
         <div class="modal" tabindex="-1" role="dialog">
@@ -33,9 +35,16 @@
 </form>
 
   <h3>{{ $project->name }}</h3>
+    @if($project->image)
+  <div id="form-control mb-3 d-flex flex-wrap">
+        <label for="image">Immagine</label>
+        <img src="{{ asset('storage/' . $project->image )}}" alt="copertina" width=100>
+    </div>
+    @endif
   <p>{{ $project->category->name }}</p>
  
     <p>{{ $project->customer }}</p>
+
 
     @if (count($project->technologies) > 0)
     <small>

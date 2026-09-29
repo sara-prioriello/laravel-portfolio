@@ -2,7 +2,7 @@
 @section('title', 'Projects')
 @section('content')
     <h1>Projects</h1>
-    <form action="{{ route('projects.store') }}" method="POST">
+    <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
@@ -38,6 +38,10 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Immagine di copertina</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
